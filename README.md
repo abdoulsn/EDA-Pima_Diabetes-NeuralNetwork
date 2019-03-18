@@ -1,6 +1,7 @@
-# EDA ET Creation de reseau de neurone pour PIMA Diabetes indias
-L'objectif des données est de prédire si un patient est diabétique ou non, en fonction de certaines mesures de diagnostic incluses dans l'ensemble de données.
-Les varaibles de la bases.
+# EDA ET Creation de reseau de neurone pour PIMA Diabetes indias  
+L'objectif des données est de prédire si un patient est diabétique ou non, en fonction de certaines mesures de diagnostic incluses dans l'ensemble de données.  
+  
+Les varaibles de la bases.  
 **Grossesses**: Nombre de fois enceinte   
 **Glucose**: La concentration de glucose plasmatique a 2 heures dans un test de tolérance au glucose par voie orale  
 **Pression sanguine**: Tension artérielle diastolique (mm Hg)  
