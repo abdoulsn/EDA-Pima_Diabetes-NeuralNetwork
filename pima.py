@@ -41,18 +41,18 @@ corr
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- #
 
-# Randomise the data 
+# Randomiser les donnees 
 from sklearn.utils import shuffle
-df = shuffle(df)
-
-#Let's split data of Y and X from Dataset 
-target = np.array(df['Outcome'])
-del df['Outcome']
-predicteur = np.array(df)
 
 # Echantillon de train et  de test
 seed = 123
-X_train, X_test, Y_train, Y_test = train_test_split(df, test_size=0.25, random_state=seed)
+X_train, X_test= train_test_split(df, test_size =0.25, random_state=seed)
+
+app_X  = X_train[X_train.columns[:8]]
+test_X = X_test[X_test.columns[:8]]
+app_Y  = X_train['Outcome']
+test_Y = X_test['Outcome']
+
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- #
 
@@ -67,9 +67,9 @@ from keras.utils.vis_utils import plot_model
 # Definisons les callback sur la base de loss pour l'arrete de l'entrainement
 class myCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
-        if(logs.get('loss')<0.3):
-            print("\n Arret de l'entrainement avec car car loss est inferieur a .3")
-                self.model.stop_training = True
+        if(logs.get('loss')<0.15):
+            print("\n Arret de l'entrainement avec car car loss est inferieur a .15")
+            self.model.stop_training = True
           
           
 # 2. Définir le modèle
@@ -89,11 +89,13 @@ m.summary()
 # 3. compilation et execution du modele
 m.compile(loss='mean_squared_error' , optimizer='adam', metrics=['accuracy'])
 callbacks = myCallback()
-history = m.fit(X_train, Y_train, epochs=400, batch_size=len(X_train), verbose=1, callbacks=[callbacks])
+history = m.fit(app_X, app_Y, epochs=400, batch_size=len(app_X), verbose=1, callbacks=[callbacks])
 
 # le courbe de l'accuracy
 plt.plot(history.history['acc'])
 plt.show()
+
+# Evaluation du modele
 
 # Evaluation du modele
 scores = m.evaluate(app_X, app_Y)
