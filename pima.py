@@ -1,7 +1,7 @@
 # This Python 3 environment
 import warnings
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import numpy as np # Algebre lineaire 
+import pandas as pd # lecture des donnees en CSV file I/O (e.g. pd.read_csv)
 import seaborn as sns
 import itertools 
 import matplotlib.pyplot as plt
@@ -17,13 +17,23 @@ warnings.filterwarnings('ignore')
 from sklearn.model_selection import train_test_split
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- #
-# loading data in pandas df
+# On charge les donnees avec pandas.
 df = pd.read_csv('pima.csv')
 df.info()
 
-diabetic=df[df['Outcome']==1]  # data for  diabetic
-nondiabetic=df[df['Outcome']==0] # data for no diabetics
-df.isnull().sum() # no misising data
+df.isnull().sum() # Pas de donnees manquantes
+
+diabetic=df[df['Outcome']==1]  # les personne diabetiques
+nondiabetic=df[df['Outcome']==0] # les personnes non diabetics
+
+# Distribution de la variables Outcome dans le base
+
+sns.countplot(x='Outcome',data=df)
+plt.show()
+df['Outcome'].value_counts(1)  #len(df[df.Outcome == 1])/len(df['Outcome'])
+# Nous avons plus de individus sains.
+
+
 
 # Correlation
 corr = df.corr()
@@ -57,8 +67,8 @@ from keras.utils.vis_utils import plot_model
 # Definisons les callback sur la base de loss pour l'arrete de l'entrainement
 class myCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
-        if(logs.get('loss')<0.4):
-            print("\n Arret de l'entrainement avec car car loss est inferieur a .4")
+        if(logs.get('loss')<0.3):
+            print("\n Arret de l'entrainement avec car car loss est inferieur a .3")
                 self.model.stop_training = True
           
           
@@ -82,8 +92,6 @@ callbacks = myCallback()
 history = m.fit(X_train, Y_train, epochs=400, batch_size=len(X_train), verbose=1, callbacks=[callbacks])
 
 # le courbe de l'accuracy
-
-# plot metric  
 plt.plot(history.history['acc'])
 plt.show()
 
